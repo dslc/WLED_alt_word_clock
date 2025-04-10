@@ -25,7 +25,7 @@ void Alt_Word_Clock::loop() {
 void Alt_Word_Clock::highlight_clock_word(enum ClockWord clock_word) {
   ClockWordParam *w = &clock_words[clock_word];
   for (int i = 0; i < w->letter_count; i++) {
-    _led_mask[i] = 1;
+    _led_mask[w->start_led_pos + i] = 1;
   }
 }
 
