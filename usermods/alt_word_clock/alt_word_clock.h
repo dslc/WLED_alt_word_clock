@@ -59,11 +59,13 @@ class Alt_Word_Clock : public Usermod {
 
   private:
     bool _enabled;
+    bool _ldr_brightness_control;
     uint32_t _t_last_update;
     bool _leds_on;
     uint32_t _n_leds = 120;
     uint16_t _pos = 0;
     uint8_t _led_mask[MAX_WORD_CLOCK_LEDS];
+    uint8_t _brightness; // 0 - 255
 
     void zero_mask(void);
     void turn_leds_on(void);
@@ -74,6 +76,8 @@ class Alt_Word_Clock : public Usermod {
     void highlight_clock_word(enum ClockWord clock_word);
     void highlight_clock_words(enum ClockWord *words);
     void show_time(int hour, int minute);
+
+    uint8_t get_ambient_light_level(void);
 
   public:
     void setup() override;
