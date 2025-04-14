@@ -1,7 +1,5 @@
 #include "alt_word_clock.h"
 
-const static int LDR_ADC_PIN = 2;
-
 #define CW(POS, LEN, WORD) {POS, LEN},
 static ClockWordParam clock_words[] = {WORD_PARAMS};
 #undef CW
@@ -21,18 +19,18 @@ void Alt_Word_Clock::loop() {
   }
   _t_last_update = t_now;
 
-  /*
   if (_ldr_brightness_control) {
     uint8_t ambient_light_level = get_ambient_light_level();
 
     // The higher the ambient lighting, the lower the clock brightness.
     _brightness = 255 - ambient_light_level;
   }
-  */
+  /*
   _brightness += 8;
   if (_brightness >= 240) {
     _brightness = 1;
   }
+  */
 
   show_time(hourFormat12(localTime), minute(localTime));
 }
@@ -192,6 +190,7 @@ void Alt_Word_Clock::addToConfig(JsonObject &root) {
   JsonObject top = root.createNestedObject(F("AltWordClock"));
   top[F("enabled")] = _enabled;
   top[F("LDRBrightnessControl")] = _ldr_brightness_control;
+  top[F("LDRADCpin")] = _LDR_ADC_pin;
 }
 
 bool Alt_Word_Clock::readFromConfig(JsonObject &root) {
@@ -201,12 +200,13 @@ bool Alt_Word_Clock::readFromConfig(JsonObject &root) {
 
   configComplete &= getJsonValue(top[F("enabled")], _enabled);
   configComplete &= getJsonValue(top[F("LDRBrightnessControl")], _ldr_brightness_control);
+  configComplete &= getJsonValue(top[F("LDRADCpin")], _LDR_ADC_pin);
 
   return configComplete;
 }
 
 uint8_t Alt_Word_Clock::get_ambient_light_level(void) {
-  uint16_t adc_millivolts = analogReadMilliVolts(LDR_ADC_PIN);
+  uint16_t adc_millivolts = analogReadMilliVolts(_LDR_ADC_pin);
 
   // 0 - 3300 mV -> 0 - 255
 

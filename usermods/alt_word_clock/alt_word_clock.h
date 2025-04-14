@@ -60,6 +60,7 @@ class Alt_Word_Clock : public Usermod {
   private:
     bool _enabled;
     bool _ldr_brightness_control;
+    int _LDR_ADC_pin = 33;
     uint32_t _t_last_update;
     bool _leds_on;
     uint32_t _n_leds = 120;
